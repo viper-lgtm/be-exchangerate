@@ -1,0 +1,45 @@
+name: "CodeQL Advanced - Java Maven"
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java-kotlin
+          # Použijeme širší sadu, aby to chytilo i ty booleany a code smells
+          queries: security-and-quality
+
+      # Tady je ten zásadní rozdíl:
+      # Voláme 'mvn compile', protože v tvém POMu je standardní compile vypnutý.
+      # CodeQL se teď "přisaje" na tento proces.
+      - name: Custom Maven Build
+        run: mvn clean compile -DskipTests
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:java-kotlin"
