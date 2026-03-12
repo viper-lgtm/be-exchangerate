@@ -1,0 +1,100 @@
+# ==============================================================================
+# NÁZEV WORKFLOW (Zobrazuje se v záložce Actions)
+# ==============================================================================
+name: "CodeQL Advanced - Kompletní Výukový Průvodce"
+
+# ==============================================================================
+# SPÍNAČE (Triggers) - Kdy se má automatika spustit?
+# ==============================================================================
+on:
+  push:
+    # Spustí se při každém nahrání kódu. Chrání "hlavní pravdu" v masteru.
+    branches: [ "master" ]
+  pull_request:
+    # Spustí se při návrhu změny. Klíčové pro Code Review - vidíš chyby dřív,
+    # než se dostanou do hlavního kódu.
+    branches: [ "master" ]
+  schedule:
+    # Plánované spouštění (Cron).
+    # '26 4 * * 6' = Sobota, 4:26 ráno UTC.
+    # Důvod: I když na kód nesáhneš rok, databáze virů a chyb se aktualizuje denně.
+    # Tento sken tě upozorní, že tvůj starý kód je nově v nebezpečí.
+    - cron: '26 4 * * 6'
+
+# ==============================================================================
+# PRÁCE (Jobs) - Seznam úloh, které se mají vykonat.
+# ==============================================================================
+jobs:
+  analyze:
+    name: "Analýza jazyka: ${{ matrix.language }}"
+
+    # RUNNER: Na jakém stroji to běží?
+    # GitHub ti půjčí virtuální počítač (obvykle Linux Ubuntu).
+    # Výhoda: Vždy čisté prostředí, nemusíš nic instalovat u sebe.
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+
+    # OPRÁVNĚNÍ (Permissions): Co všechno smí tento automat v tvém repu dělat?
+    permissions:
+      security-events: write # ZÁPIS: Aby mohl nahrát nalezené chyby do záložky Security.
+      packages: read        # ČTENÍ: Aby si mohl stáhnout tvé knihovny z GitHub skladu.
+      actions: read         # ČTENÍ: Aby mohl porovnat výsledky s minulým skenem.
+      contents: read        # ČTENÍ: Aby si mohl "přečíst" tvůj zdrojový kód (git clone).
+
+    # STRATEGIE (Matrix): Umožňuje spustit stejný skript pro více jazyků najednou.
+    strategy:
+      fail-fast: false      # Když selže Java, nezastavuj analýzu Pythonu (pokud bys ho přidal).
+      matrix:
+        include:
+          - language: java-kotlin
+            # build-mode manual: CodeQL se "napojí" na tvůj Maven příkaz.
+            # Vidí tak přesně to, co vidí kompilátor (včetně Lomboku/MapStructu).
+            build-mode: manual
+
+    # ==========================================================================
+    # KROKY (Steps) - Konkrétní příkazy vykonávané jeden po druhém.
+    # ==========================================================================
+    steps:
+      # 1. KROK: Stažení kódu z GitHubu na virtuální stroj runneru.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. KROK: Instalace Javy (JDK).
+      # Cache: 'maven' zajistí, že při dalším běhu se knihovny nestahují z netu,
+      # ale vezmou se z paměti. To šetří čas (třeba i minuty).
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # 3. KROK: Příprava CodeQL motoru.
+      # queries: 'security-and-quality' je nejvyšší stupeň.
+      # Neřeší jen "tady ti ukradnou heslo", ale i "tady máš zbytečně složitý kód".
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          queries: security-and-quality
+
+      # 4. KROK: Samotná kompilace projektu (u manual módu).
+      # shell: bash -> standardní terminál.
+      # run: Skutečný příkaz, který bys napsal v IDE.
+      # -DskipTests: CodeQL analyzuje kód, ne výsledek testů. Přeskočením testů
+      # zkrátíš běh Actions klidně o 10 minut.
+      - name: Run manual build steps
+        if: matrix.build-mode == 'manual'
+        shell: bash
+        run: |
+          mvn clean compile -DskipTests
+
+      # 5. KROK: Vyhodnocení a odeslání dat.
+      # Zde CodeQL vezme vše, co "viděl" během kompilace, porovná to se svými
+      # vzorci a pošle SARIF soubor (výsledek) zpět do GitHub Security.
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          # category: Pokud bys měl víc skenů (např. CodeQL a Sonar),
+          # pomůže ti tohle odlišit, kdo co našel.
+          category: "/language:${{matrix.language}}"
