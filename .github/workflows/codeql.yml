@@ -98,7 +98,7 @@ jobs:
       #shell: pwsh
       shell: powershell
       run: |
-        mvn clean compile -DskipTests
+        ./mvnw.cmd clean compile -DskipTests
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
