@@ -94,7 +94,8 @@ jobs:
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
     - name: Run manual build steps
       if: matrix.build-mode == 'manual'
-      shell: bash
+      #shell: bash
+      shell: pwsh
       run: |
         mvn clean compile -DskipTests
 
