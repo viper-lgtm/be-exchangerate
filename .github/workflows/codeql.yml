@@ -45,6 +45,8 @@ jobs:
         include:
         - language: java-kotlin
           build-mode: autobuild # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
+        - language: actions
+          build-mode: none # This mode only analyzes JavaScript. Set this to 'autobuild' or 'manual' to analyze TypeScript too.
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -53,6 +55,7 @@ jobs:
         # see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning.
         # If you are analyzing a compiled language, you can modify the 'build-mode' for that language to customize how
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -64,11 +67,12 @@ jobs:
     #   uses: actions/setup-example@v1
 
     # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4
-      with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
+#    - name: Initialize CodeQL
+#      uses: github/codeql-action/init@v4
+#      with:
+#        languages: ${{ matrix.language }}
+#        languages: java, javascript
+#        build-mode: ${{ matrix.build-mode }}
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
@@ -76,7 +80,17 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 #        queries: security-and-quality, ./.github/codeql/custom-queries/missing-http-timeout.ql
-        queries: security-and-quality, ./.github/codeql/custom-queries
+#        queries: security-and-quality, ./.github/codeql/custom-queries
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v4
+      with:
+       languages: ${{ matrix.language }}
+       build-mode: ${{ matrix.build-mode }}
+       # Dynamický výběr dotazů:
+       queries: >
+          security-and-quality,
+          ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries/missing-http-timeout.ql' || './.github/codeql/custom-queries/detect-forbidden-trivy.ql' }}
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
