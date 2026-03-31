@@ -1,0 +1,5 @@
+name: viper-lgtm/actions-security-pack
+version: 1.0.0
+groups: actions
+dependencies:
+  codeql/actions-all: "*"
