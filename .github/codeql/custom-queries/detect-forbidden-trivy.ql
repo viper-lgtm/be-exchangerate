@@ -6,9 +6,10 @@
  * @id custom/forbidden-trivy-action
  */
 
-import yaml
+import javascript
 
-from YamlScalar scalar
+from StringLiteral action
 where
-  scalar.getValue().regexpMatch(".*aquasecurity/trivy-action.*")
-select scalar, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy v CI/CD workflow."
+  // Hledá text kdekoli, nezávisle na tom, zda je to v YAML uzel nebo hodnota
+  action.getValue().regexpMatch(".*aquasecurity/trivy-action.*")
+select action, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy v CI/CD workflow."
