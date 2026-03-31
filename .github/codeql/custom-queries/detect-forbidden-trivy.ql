@@ -6,10 +6,9 @@
  * @id custom/forbidden-trivy-action
  */
 
-import javascript
+import yaml
 
-from StringLiteral action
+from YamlScalar scalar
 where
-  // Tento útok na řetězec je nejspolehlivější, protože najde text kdekoli v YAML
-  action.getValue().regexpMatch(".*aquasecurity/trivy-action.*")
-select action, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy v CI/CD workflow."
+  scalar.getValue().regexpMatch(".*aquasecurity/trivy-action.*")
+select scalar, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy v CI/CD workflow."
