@@ -1,0 +1,19 @@
+name: Security Scan (Trivy)
+on: [push, pull_request]
+
+jobs:
+  trivy-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Zde by měl být také hash!
+
+      - name: Run Trivy vulnerability scanner (Repo scan)
+        # Použijeme konkrétní hash pro trivy-action
+        uses: aquasecurity/trivy-action@0.35.0 # Doplňte aktuální platný hash
+        with:
+          scan-type: 'fs' # Skenujeme souborový systém (repozitář)
+          ignore-unfixed: true
+          format: 'table'
+          exit-code: '1' # Zastaví pipeline při nálezu kritické chyby
+          severity: 'CRITICAL,HIGH'
