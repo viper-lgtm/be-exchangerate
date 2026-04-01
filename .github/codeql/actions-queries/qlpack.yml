@@ -3,5 +3,3 @@ version: 1.0.0
 groups: actions
 dependencies:
   codeql/actions-all: "*"
-queries:
-  - detect-forbidden-trivy.ql
