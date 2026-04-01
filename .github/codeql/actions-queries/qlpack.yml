@@ -3,3 +3,4 @@ version: 1.0.0
 groups: actions
 dependencies:
   codeql/actions-all: ^0.6.0
+queries: .
