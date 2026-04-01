@@ -12,6 +12,5 @@ import actions
 
 from UsesStep s
 where
-  // Hledáme kroky (steps), které používají akci od aquasecurity
-  s.getUses().regexpMatch("(?i)aquasecurity/trivy-action.*")
-select s, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy v CI/CD workflow."
+  s.getUndershotUses().regexpMatch("(?i)aquasecurity/trivy-action.*")
+select s, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy."
