@@ -3,7 +3,9 @@
  * @description Detekuje zakázané použití Trivy v GitHub Actions workflow.
  * @kind problem
  * @problem.severity error
+ * @security-severity 1.0
  * @id custom/forbidden-trivy-action
+ * @tags security external/cwe/cwe-1104
  */
 
 import actions
