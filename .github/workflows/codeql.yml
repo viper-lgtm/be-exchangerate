@@ -98,14 +98,17 @@ jobs:
 #       queries: security-and-quality, ./.github/codeql/custom-queries
        queries:
          - security-and-quality
-         - ./.github/codeql/actions-queries
-#       queries: security-and-quality, .github/codeql/actions-queries
-#       queries: >
-#         security-and-quality,
-#         ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}
-#       queries: >
-#          security-and-quality,
-          #${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries/missing-http-timeout.ql' || './.github/codeql/custom-queries/detect-forbidden-trivy.ql' }}
+         - "${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}"
+#       queries:
+#         - security-and-quality
+#         - ./.github/codeql/actions-queries
+##       queries: security-and-quality, .github/codeql/actions-queries
+##       queries: >
+##         security-and-quality,
+##         ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}
+##       queries: >
+##          security-and-quality,
+#          #${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries/missing-http-timeout.ql' || './.github/codeql/custom-queries/detect-forbidden-trivy.ql' }}
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
