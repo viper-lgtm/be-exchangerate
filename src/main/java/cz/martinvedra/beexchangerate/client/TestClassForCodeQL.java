@@ -15,7 +15,7 @@ public class TestClassForCodeQL {
 
         try {
             // Jen simulujeme použití, nemusí to reálně nikam volat
-            System.out.println("Client created: " + client.toString());
+            System.out.println("Client created: " + client.toString() + ", Request created: " + request.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
