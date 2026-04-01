@@ -89,6 +89,7 @@ jobs:
       with:
        languages: ${{ matrix.language }}
        build-mode: ${{ matrix.build-mode }}
+       queries: security-and-quality, ./.github/codeql/actions-queries
 #       config: |
 #         paths:
 #           - .github/workflows
@@ -96,7 +97,6 @@ jobs:
        # Dynamický výběr dotazů:
 #       queries: security-and-quality
 #       queries: security-and-quality, ./.github/codeql/custom-queries
-        queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
 #       queries: "security-and-quality, ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}"
 #       queries:
 #         - security-and-quality
