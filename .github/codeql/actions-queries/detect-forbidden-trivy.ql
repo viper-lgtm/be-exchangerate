@@ -10,7 +10,7 @@
 
 import actions
 
-from Step s
+from UsesStep s
 where
   // Hledáme kroky (steps), které používají akci od aquasecurity
   s.getUses().regexpMatch("(?i)aquasecurity/trivy-action.*")
