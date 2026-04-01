@@ -89,8 +89,8 @@ jobs:
       with:
        languages: ${{ matrix.language }}
        build-mode: ${{ matrix.build-mode }}
-       queries: security-and-quality, ./.github/codeql/custom-queries
-#       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
+#       queries: security-and-quality, ./.github/codeql/custom-queries
+       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
 #       config: |
 #         paths:
 #           - .github/workflows
