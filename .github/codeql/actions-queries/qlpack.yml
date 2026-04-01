@@ -3,5 +3,6 @@ version: 1.0.0
 groups: actions
 dependencies:
   codeql/actions-all: ^0.6.0
+  viper-lgtm/actions-security-pack: .
 queries:
-  - .
+  - detect-forbidden-trivy.ql
