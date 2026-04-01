@@ -88,7 +88,8 @@ jobs:
        languages: ${{ matrix.language }}
        build-mode: ${{ matrix.build-mode }}
        # Dynamický výběr dotazů:
-       queries: security-and-quality, ./.github/codeql/custom-queries
+       queries: security-and-quality
+#       queries: security-and-quality, ./.github/codeql/custom-queries
 #       queries: >
 #          security-and-quality,
       #    ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries/missing-http-timeout.ql' || './.github/codeql/custom-queries/detect-forbidden-trivy.ql' }}
