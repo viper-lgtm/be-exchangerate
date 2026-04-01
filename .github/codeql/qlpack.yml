@@ -1,0 +1,5 @@
+name: viper-lgtm/java-security-pack
+version: 1.0.0
+groups: java
+dependencies:
+  codeql/java-all: "*"
