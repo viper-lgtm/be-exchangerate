@@ -12,5 +12,5 @@ import actions
 
 from UsesStep s
 where
-  s.getUndershotUses().regexpMatch("(?i)aquasecurity/trivy-action.*")
+  s.getUses().regexpMatch("(?i)aquasecurity/trivy-action.*")
 select s, "KRITICKÉ VAROVÁNÍ: Detekováno zakázané použití Trivy."
