@@ -1,0 +1,8 @@
+name: viper-lgtm/security-pack
+version: 1.0.0
+dependencies:
+  codeql/actions-all: ^0.6.0
+  codeql/java-all: "*"
+queries:
+  - actions-queries/
+  - custom-queries/
