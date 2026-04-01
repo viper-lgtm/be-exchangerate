@@ -2,7 +2,6 @@ name: viper-lgtm/actions-security-pack
 version: 1.0.0
 groups: actions
 dependencies:
-  codeql/actions-all: ^0.6.0
-  viper-lgtm/actions-security-pack: .
+  codeql/actions-all: "*"
 queries:
   - detect-forbidden-trivy.ql
