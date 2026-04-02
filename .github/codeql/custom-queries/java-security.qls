@@ -2,4 +2,3 @@
 - import: codeql-suites/java-security-and-quality.qls
   from: codeql/java-queries
 - queries: .
-  from: viper-lgtm/java-security-pack
