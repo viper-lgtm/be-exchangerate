@@ -46,18 +46,7 @@ jobs:
           - language: java-kotlin
             build-mode: autobuild
             suite: ./.github/codeql/custom-queries/java-security.qls
-          - language: actions
-            build-mode: none
-            suite: ./.github/codeql/actions-queries/action-security.qls
-#            suite: ${{ github.workspace }}/.github/codeql/actions-queries/detect-forbidden-trivy.ql
-#            packs: codeql/actions-queries, ./.github/codeql/actions-queries funguje, ale ne pro actions
-#            suite: ./.github/codeql/actions-queries/action-security.qls, ./.github/codeql/actions-queries/detect-forbidden-trivy.ql funguje, ale ne pro actions
-#        - language: java-kotlin
 #          build-mode: autobuild # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
-#        - language: actions
-#          build-mode: none # This mode only analyzes JavaScript. Set this to 'autobuild' or 'manual' to analyze TypeScript too.
-#        - language: javascript-typescript # Změna zpět z 'actions'
-        #          build-mode: none
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -98,63 +87,7 @@ jobs:
       with:
        languages: ${{ matrix.language }}
        build-mode: ${{ matrix.build-mode }}
-#       queries: security-and-quality
-#       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
-#       config: |
-#         paths:
-#           - .github/workflows
-#           - src/main/java
        queries: ${{ matrix.suite }}
-
-    - name: Inject Custom Actions Query
-      if: matrix.language == 'actions'
-      shell: bash
-      run: |
-        # Ručně přidáme tvůj dotaz do konfiguračního souboru, 
-        # který si CodeQL vytvořil v tempu
-        echo "- uses: ${{ github.workspace }}/.github/codeql/actions-queries/detect-forbidden-trivy.ql" >> /home/runner/work/_temp/user-config.yaml   
-
-#       queries: ${{ matrix.suite }}, ./.github/codeql/actions-queries/action-security.qls, ./.github/codeql/actions-queries/detect-forbidden-trivy.ql
-
-#       config: | funguje, ne pro actions
-#         packs:
-#           - ${{ github.workspace }}/.github/codeql/custom-queries
-#           - ${{ github.workspace }}/.github/codeql/actions-queries
-
-#       additional-packs: ${{ github.workspace }} warnings
-
-#       config: | funguje, ale ne pro actions
-#         packs:
-#           - .github/codeql/custom-queries
-#           - .github/codeql/actions-queries
-
-#       packs: | tohle nefunguje
-#         ./.github/codeql/custom-queries
-#         ./.github/codeql/actions-queries
-
-#       queries: > funguje, ale ne pro actions
-#         ${{ matrix.suite }},
-#         ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}
-
-#       queries: ${{ matrix.suite }} funguje, ale ne pro actions
-
-#       packs: viper-lgtm/java-security-pack, viper-lgtm/actions-security-pack
-#       packs: +viper-lgtm/java-security-pack, +viper-lgtm/actions-security-pack
-#       queries: security-and-quality, ./.github/codeql/java-security.qls
-#       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
-#       queries: security-and-quality
-#       queries: security-and-quality, ./.github/codeql/custom-queries
-#       queries: "security-and-quality, ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}"
-#       queries:
-#         - security-and-quality
-#         - ./.github/codeql/actions-queries
-##       queries: security-and-quality, .github/codeql/actions-queries
-##       queries: >
-##         security-and-quality,
-##         ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}
-##       queries: >
-##          security-and-quality,
-#          #${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries/missing-http-timeout.ql' || './.github/codeql/custom-queries/detect-forbidden-trivy.ql' }}
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
