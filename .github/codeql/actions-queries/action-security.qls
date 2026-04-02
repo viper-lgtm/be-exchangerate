@@ -2,4 +2,3 @@
 - import: codeql-suites/actions-security-and-quality.qls
   from: codeql/actions-queries
 - queries: .
-  from: viper-lgtm/actions-security-pack

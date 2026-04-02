@@ -101,6 +101,7 @@ jobs:
 #           - .github/workflows
 #           - src/main/java
        queries: ${{ matrix.suite }}
+       packs: +viper-lgtm/java-security-pack, +viper-lgtm/actions-security-pack
 #       queries: security-and-quality, ./.github/codeql/java-security.qls
 #       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
 #       queries: security-and-quality
