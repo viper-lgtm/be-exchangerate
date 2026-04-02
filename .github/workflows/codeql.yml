@@ -48,7 +48,7 @@ jobs:
             suite: ./.github/codeql/custom-queries/java-security.qls
           - language: actions
             build-mode: none
-            suite: ./.github/codeql/actions-queries/actions-security.qls
+            suite: ./.github/codeql/actions-queries/action-security.qls
 #        - language: java-kotlin
 #          build-mode: autobuild # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
 #        - language: actions
