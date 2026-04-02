@@ -43,10 +43,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - language: java-kotlin
-          build-mode: autobuild # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
-        - language: actions
-          build-mode: none # This mode only analyzes JavaScript. Set this to 'autobuild' or 'manual' to analyze TypeScript too.
+          - language: java-kotlin
+            build-mode: autobuild
+            suite: ./.github/codeql/custom-queries/java-security.qls
+          - language: actions
+            build-mode: none
+            suite: ./.github/codeql/actions-queries/actions-security.qls
+#        - language: java-kotlin
+#          build-mode: autobuild # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
+#        - language: actions
+#          build-mode: none # This mode only analyzes JavaScript. Set this to 'autobuild' or 'manual' to analyze TypeScript too.
 #        - language: javascript-typescript # Změna zpět z 'actions'
         #          build-mode: none
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
@@ -94,8 +100,9 @@ jobs:
 #         paths:
 #           - .github/workflows
 #           - src/main/java
-       # Dynamický výběr dotazů:
-       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
+       queries: ${{ matrix.suite }}
+#       queries: security-and-quality, ./.github/codeql/java-security.qls
+#       queries: security-and-quality, ./.github/codeql/actions-queries, ./.github/codeql/custom-queries
 #       queries: security-and-quality
 #       queries: security-and-quality, ./.github/codeql/custom-queries
 #       queries: "security-and-quality, ${{ matrix.language == 'java-kotlin' && './.github/codeql/custom-queries' || './.github/codeql/actions-queries' }}"
