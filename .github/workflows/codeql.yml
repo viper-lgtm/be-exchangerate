@@ -45,7 +45,7 @@ jobs:
         include:
           - language: java-kotlin
             build-mode: autobuild
-            suite: ./.github/codeql/custom-queries/java-security.qls
+#            suite: ./.github/codeql/custom-queries/java-security.qls
 #          build-mode: autobuild # This mode only analyzes Java. Set this to 'autobuild' or 'manual' to analyze Kotlin too.
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
@@ -87,7 +87,9 @@ jobs:
       with:
        languages: ${{ matrix.language }}
        build-mode: ${{ matrix.build-mode }}
-       queries: ${{ matrix.suite }}
+#       queries: ${{ matrix.suite }}
+       queries: ./.github/codeql/custom-queries/java-security.qls
+       packs: viper-lgtm/java-security-pack@1.0.0
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
