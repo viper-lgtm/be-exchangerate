@@ -1,4 +1,6 @@
-- description: "Moje vlastní Actions security suita"
+- description: "Actions custom suite"
 - import: codeql-suites/actions-security-and-quality.qls
   from: codeql/actions-queries
 - queries: .
+- include:
+    query filename: detect-forbidden-trivy.ql
