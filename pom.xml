@@ -81,7 +81,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Testing Vulnerable Dependencies -->
+        <!-- Testing -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
