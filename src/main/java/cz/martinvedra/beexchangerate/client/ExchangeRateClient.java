@@ -16,6 +16,8 @@ public class ExchangeRateClient {
 
     @Value("${com.erstegroup.developers.webapi.exchange-rate-url}")
     private String apiCsasUrl;
+    
+    String codeqlTest = "Tohle musi CodeQL najit";
 
     public ExchangeRateDto[] getExchangeRateFromApi() {
         return restTemplate.getForObject(apiCsasUrl, ExchangeRateDto[].class);
