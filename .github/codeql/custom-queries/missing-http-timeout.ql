@@ -11,9 +11,7 @@ import semmle.code.java.dataflow.DataFlow
 
 from ConstructorCall cc
 where
-  // Hledáme volání konstruktoru OkHttpClient
   cc.getConstructedType().hasQualifiedName("okhttp3", "OkHttpClient") and
-  // A zároveň neexistuje následné volání metody pro timeout
   not exists(MethodCall mc |
     mc.getQualifier().(MethodCall).getQualifier*() = cc and
     mc.getMethod().getName() in ["connectTimeout", "readTimeout", "writeTimeout"]
