@@ -18,6 +18,7 @@ public class ExchangeRateClient {
     private String apiCsasUrl;
     
     public ExchangeRateDto[] getExchangeRateFromApi() {
+        String url = "https://www.google.com";
         return restTemplate.getForObject(apiCsasUrl, ExchangeRateDto[].class);
     }
 }
